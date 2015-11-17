@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 配置模式为开发模式，自动加载struts.xml和显示错误提示信息 -->
+	<constant name="struts.devMode" value="true" />
+	<!-- 设置页面主题为简单主题，去掉struts2开发提供的样式 -->
+	<constant name="struts.ui.theme" value="simple" />
+	<!-- 当Struts2的配置文件修改后，系统是否自动重新加载配置文件，默认值为false(生产环境下使用)，开发阶段最好打开 -->
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<!-- 把Action对象交给Spring创建和管理 -->
+	<constant name="struts.objectFactory" value="spring" />
+	<!-- Struts2处理的请求后缀,默认值是action -->
+	<constant name="struts.action.extension" value="do" />
+	<!-- 开启！调用方法 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<!-- 结果资源的放置路径 -->
+	<constant name="struts.convention.result.path" value="/WEB-INF/views/" />
+	<!-- action分隔符 用“_” -->
+	<constant name="struts.convention.action.name.separator" value="_" />
+	<constant name="struts.objectFactory.spring.autoWire.alwaysRespect" value="true" />
+
+	<package name="json" extends="json-default">
+		<!-- 在默认拦截器前加入自定拦截器，用以进行session过期判断并跳转、向log4j的ThreadContext中写入登陆id -->
+		<interceptors>
+			<!-- 定义了一个用于拦截器登录的拦截器 -->
+			<interceptor name="loginInterceptor" class="com.yejf.base.LoginInteceptor"></interceptor>
+			<!-- 定义一个拦截器栈 -->
+			<interceptor-stack name="systemStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="loginInterceptor" />
+			</interceptor-stack>
+		</interceptors>
+
+		<!-- 定义系统默认拦截器 全局 -->
+		<default-interceptor-ref name="systemStack" /><!--覆盖掉原来的默认拦截器，注意，这个要放在interceptors的外面 -->
+
+		<global-results>
+			<!-- 定义全局Result映射 -->
+			<result name="JSONArray" type="json">
+				<param name="root">results</param>
+			</result>
+			<result name="isValidator" type="json">
+				<param name="root">validator</param>
+			</result>
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</global-results>
+	</package>
+
+	<package name="default" extends="struts-default">
+		<!-- interceptor配置参考公司框架 -->
+		<!-- 拦截器配置 -->
+		<interceptors>
+			<!-- 定义了一个用于拦截器登录的拦截器 -->
+			<interceptor name="loginInterceptor" class="com.yejf.base.LoginInteceptor"></interceptor>
+			<!-- 定义一个拦截器栈 -->
+			<interceptor-stack name="systemStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="loginInterceptor" />
+			</interceptor-stack>
+		</interceptors>
+
+		<!-- 定义系统默认拦截器 全局 -->
+		<default-interceptor-ref name="systemStack" />
+
+		<global-results>
+			<result name="login">
+				/login.jsp
+			</result>
+		</global-results>
+		<!-- <action name="workflowAction_*" class="workflowAction" method="{1}"> <result name="list" type="redirectAction"> 
+			<param name="actionName">workflowAction_deployHome.action</param> </result> <result name="deployHome">WEB-INF/views/workflow/workflow.jsp</result> 
+			<result name="task">WEB-INF/views/workflow/task.jsp</result> <result name="image">WEB-INF/views/workflow/image.jsp</result> 
+			<result name="listTask" type="redirectAction"> <param name="actionName">workflowAction_listTask.action</param> 
+			</result> <result name="viewTaskForm" type="redirectAction"> 从LeaveBill.bpmn文件中获取任务节点的url连接 <param name="actionName">/${#url}</param> 
+			</result> <result name="taskForm">WEB-INF/views/workflow/taskForm.jsp</result> <result name="viewHisComment">WEB-INF/views/workflow/taskFormHis.jsp</result> 
+			</action> -->
+	</package>
+	<package name="login" extends="struts-default">
+		<!-- 全局结果视图 -->
+		<global-results>
+			<result name="login">
+				/login.jsp
+			</result>
+		</global-results>
+
+		<action name="loginAction_*" class="com.yejf.base.LoginAction" method="{1}">
+			<result name="success">WEB-INF/views/main.jsp</result>
+			<result name="top">WEB-INF/views/top.jsp</result>
+			<result name="left">WEB-INF/views/left.jsp</result>
+			<result name="welcome">WEB-INF/views/index.jsp</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,34 @@
+*{font-size:9pt; font-family:Microsoft YaHei,Tahoma,Verdana,Î¢ÈíÑÅºÚ,ÐÂËÎÌå}
+
+
+.navlist{list-style-type:none;margin:0px; padding:1px 0 0;}
+.navlist li{ padding:0;height: 22px;}
+.navlist li a{line-height:19px;}
+.navlist li div{}
+.navlist li div.hover{ background:#E0ECFF;cursor:pointer;height: 22px;}
+.navlist li div.hover a{color:#416AA3;text-decoration: none;}
+.navlist li div.selected{ background:#3accd8;cursor:default;  height: 22px;}
+.navlist li div.selected a{color:#fff; }
+
+
+.third_ul{ list-style-type:none;margin:0px; padding:0px; display:none;}
+.third_ul li{ padding-left:20px;}
+
+.icon{ background:url(../images/easyui/icons.gif) no-repeat;width:18px; line-height:18px; display:inline-block;}
+.icon-sys{ background-position:0px -200px;}
+.icon-set{ background-position:-380px -200px;}
+.icon-add{background-position: -20px 0px;}
+
+.icon-nav{background-position: -100px -20px; }
+.icon-users{background-position: -100px -480px;}
+.icon-role{background-position: -360px -200px;}
+.icon-set{background-position: -380px -200px;}
+.icon-log{background-position: -380px -80px;}
+
+.icon-delete{ background-position:-140px -120px;}
+.icon-edit{ background-position:-380px -320px;}
+.icon-magic{ background-position:0px -500px;}
+.icon-database{ background-position:-20px -140px;}
+
+
+.icon-arrow{ background:url('../images/easyui/arrow.gif') no-repeat right;}
