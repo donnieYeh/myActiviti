@@ -1,5 +1,6 @@
 package com.yejf.ativiti.action;
 
+import java.io.File;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -12,7 +13,10 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
+import org.springframework.util.StringUtils;
 
+import com.opensymphony.xwork2.ModelDriven;
+import com.yejf.ativiti.entity.WorkFlowBean;
 import com.yejf.ativiti.service.WorkFlowService;
 import com.yejf.base.BaseAction;
 import com.yejf.utils.SessionContext;
@@ -21,12 +25,19 @@ import com.yejf.utils.ValueContext;
 @ParentPackage("default")
 @Namespace("/activiti")
 @Action("workFlow")
-public class WorkFlowAction extends BaseAction {
+public class WorkFlowAction extends BaseAction implements ModelDriven<WorkFlowBean>{
 	@Resource
 	WorkFlowService workFlowService;
 
 	public void setWorkFlowService(WorkFlowService workFlowService) {
 		this.workFlowService = workFlowService;
+	}
+	
+	WorkFlowBean workFlowBean = new WorkFlowBean();
+	
+	@Override
+	public WorkFlowBean getModel() {
+		return workFlowBean;
 	}
 
 	public String deployManage() {
@@ -36,5 +47,17 @@ public class WorkFlowAction extends BaseAction {
 		ValueContext.putValueContext("prodefList", prodefList);
 		return "deployManage";
 	}
+	
+	public String deployProcess(){
+		String deployName = workFlowBean.getFileName();
+		File file = workFlowBean.getProcessFile();
+		if (StringUtils.isEmpty(deployName)) {
+			deployName = workFlowBean.getProcessFileFileName();
+		}
+		//开始部署文件
+		workFlowService.deployProcess(file,deployName);
+		return deployManage();
+	}
 
+	
 }

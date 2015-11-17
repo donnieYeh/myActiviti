@@ -1,5 +1,6 @@
 package com.yejf.ativiti.service;
 
+import java.io.File;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -28,5 +29,10 @@ public class WorkFlowServiceImpl implements WorkFlowService {
 	@Override
 	public List<ProcessDefinition> findProcessDefinitionlist() {
 		return workFlowDao.findProcessDefinitionlist();
+	}
+	
+	@Override
+	public void deployProcess(File file, String deployName) {
+		workFlowDao.deployProcess(file,deployName);
 	}
 }

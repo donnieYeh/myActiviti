@@ -11,6 +11,7 @@
 <link rel="stylesheet" type="text/css" href="<%=contextPath %>/js/jquery-easyui-1.4.4/themes/bootstrap/easyui.css">
 <script type="text/javascript" src="<%=contextPath %>/js/jquery-easyui-1.4.4/jquery.min.js"></script> 
 <script type="text/javascript" src="<%=contextPath %>/js/jquery-easyui-1.4.4/jquery.easyui.min.js"></script> 
+<script type="text/javascript" src="<%=contextPath %>/js/utils.js"></script> 
 </head>
 <body>
 

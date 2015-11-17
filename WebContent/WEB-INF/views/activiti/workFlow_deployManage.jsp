@@ -6,10 +6,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+	function submitUpload() {
+		var fileName = $("#processFile").val();
+		nameArr = fileName.split(".");
+		if (nameArr.length > 1 && nameArr[nameArr.length - 1] == "zip") {
+			document.forms[0].submit();
+		} else {
+			showMsg("fade", 1000, "文件格式错误", "文件只能是zip格式", 2000);
+		}
+	}
+</script>
 </head>
-<body class="easyui-layout">
-	<div region="north" style="height: 200px;">
-		<table class="easyui-datagrid" data-options="rownumbers:true,singleSelect:true">
+<body >
+<div class="easyui-panel" data-options="fit:true">
+	<div  title="部署列表">
+		<table class="easyui-datagrid" data-options="title:'部署列表',rownumbers:true,singleSelect:true">
 			<thead>
 				<tr>
 					<th data-options="field:'id'">id</th>
@@ -30,8 +42,8 @@
 			</tbody>
 		</table>
 	</div>
-	<div region="center">
-		<table class="easyui-datagrid" data-options="rownumbers:true,singleSelect:true">
+	<div title="流程定义列表">
+		<table class="easyui-datagrid" data-options="title:'流程定义列表',rownumbers:true,singleSelect:true">
 			<thead>
 				<tr>
 					<th data-options="field:'id'">id</th>
@@ -60,6 +72,23 @@
 			</tbody>
 		</table>
 	</div>
-	<div region="south" style="height: 200px;"></div>
+	<div class="easyui-panel" title="流程上传部署" >
+		<form action="workFlow!deployProcess.do" enctype="multipart/form-data" method="post">
+			<table>
+				<tr>
+					<td>文件名：</td>
+					<td><input class="easyui-textbox" name="fileName" style="width: 200px;"></td>
+				</tr>
+				<tr>
+					<td>流程文件：</td>
+					<td><input type="file" name="processFile" id="processFile" style="width: 200px;"></td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center"><input type="button" value="提交" onclick="submitUpload()"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
 </body>
 </html>

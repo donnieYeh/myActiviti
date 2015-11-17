@@ -1,5 +1,6 @@
 package com.yejf.ativiti.dao;
 
+import java.io.File;
 import java.util.List;
 
 import org.activiti.engine.repository.Deployment;
@@ -10,5 +11,7 @@ public interface WorkFlowDao {
 	List<Deployment> findDeploymentList();
 
 	List<ProcessDefinition> findProcessDefinitionlist();
+
+	void deployProcess(File file, String deployName);
 
 }
