@@ -50,4 +50,8 @@ public class WorkFlowDaoImpl implements WorkFlowDao {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void getDiagram() {
+	}
 }

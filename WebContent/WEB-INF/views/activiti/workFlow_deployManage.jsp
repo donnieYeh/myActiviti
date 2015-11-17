@@ -16,6 +16,10 @@
 			showMsg("fade", 1000, "文件格式错误", "文件只能是zip格式", 2000);
 		}
 	}
+	function showDiagram(name,id){
+		var url ="workFlow!showDiagram.do?procDefId="+id;
+		parent.addTab(name,url);
+	}
 </script>
 </head>
 <body >
@@ -66,7 +70,7 @@
 						<td><s:property value="resourceName" /></td>
 						<td><s:property value="diagramResourceName" /></td>
 						<td><s:property value="deploymentId" /></td>
-						<td><a href="#">查看流程图</a></td>
+						<td><a onclick="showDiagram(<s:property value="name" />)">查看流程图</a></td>
 					</tr>
 				</s:iterator>
 			</tbody>

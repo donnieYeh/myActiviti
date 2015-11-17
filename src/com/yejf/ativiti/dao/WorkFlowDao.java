@@ -13,5 +13,7 @@ public interface WorkFlowDao {
 	List<ProcessDefinition> findProcessDefinitionlist();
 
 	void deployProcess(File file, String deployName);
+	
+	void getDiagram();
 
 }

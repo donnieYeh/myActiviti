@@ -1,6 +1,7 @@
 package com.yejf.ativiti.action;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -59,5 +60,7 @@ public class WorkFlowAction extends BaseAction implements ModelDriven<WorkFlowBe
 		return deployManage();
 	}
 
-	
+	public String showDiagram(){
+		return "showDiagram";
+	}
 }
