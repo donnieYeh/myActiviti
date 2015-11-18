@@ -20,7 +20,7 @@ import com.gdth.base.entity.BaseEntity;
 @Entity
 @Table(name="a_LeaveBill")
 public class LeaveBill extends BaseEntity<Long>{
-	private Long id;//主键ID
+	//private Long id;//主键ID
 	private Integer days;// 请假天数
 	private String content;// 请假内容
 	private Date leaveDate = new Date();// 请假时间

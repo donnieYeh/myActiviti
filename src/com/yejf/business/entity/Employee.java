@@ -17,7 +17,7 @@ import com.gdth.base.entity.BaseEntity;
 @Entity
 @Table(name="a_Employee")
 public class Employee extends BaseEntity<Long>{
-	private Long id;//主键ID
+	//private Long id;//主键ID
 	private String name;//用户名
 	private String password;//密码
 	private String email;//电子邮箱
