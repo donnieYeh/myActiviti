@@ -47,7 +47,7 @@
 			}, {
 				id:'rwgl',
 				text : "任务管理",
-				attributes : ""
+				attributes : "activiti/workFlow!taskManage.do"
 			} ],
 			onClick : function(node) {
 				addTab(node.text, node.attributes.url);

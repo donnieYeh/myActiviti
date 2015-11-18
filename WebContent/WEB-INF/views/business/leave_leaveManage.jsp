@@ -22,6 +22,20 @@
 				iconCls: 'icon-edit',
 				text:"请假申请",
 				handler: function(){leaveApply();}
+			},{
+				iconCls: 'icon-edit',
+				text:"启动请假流程",
+				handler: function(){
+					window.location.href= "<%=contextPath %>/activiti/workFlow!startProcess.do?procDefId="+procDefId
+				}
+			},{
+				iconCls: 'icon-edit',
+				text:"修改",
+				handler: function(){window.location.href= ""}
+			},{
+				iconCls: 'icon-edit',
+				text:"删除",
+				handler: function(){leaveApply();}
 			}]
 		});
 	}

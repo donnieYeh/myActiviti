@@ -52,6 +52,13 @@ public class WorkFlowDaoImpl implements WorkFlowDao {
 	}
 	
 	@Override
-	public void getDiagram() {
+	public InputStream getDiagramInputStream(String proceDefId) {
+		InputStream is = processEngine.getRepositoryService().getProcessDiagram(proceDefId);
+		return is;
+	}
+	
+	@Override
+	public void removeDeploymentById(String deployId) {
+		processEngine.getRepositoryService().deleteDeploymentCascade(deployId);
 	}
 }

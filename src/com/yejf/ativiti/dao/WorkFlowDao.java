@@ -1,6 +1,7 @@
 package com.yejf.ativiti.dao;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 import org.activiti.engine.repository.Deployment;
@@ -14,6 +15,8 @@ public interface WorkFlowDao {
 
 	void deployProcess(File file, String deployName);
 	
-	void getDiagram();
+	InputStream getDiagramInputStream(String proceDefId);
+
+	void removeDeploymentById(String deployId);
 
 }

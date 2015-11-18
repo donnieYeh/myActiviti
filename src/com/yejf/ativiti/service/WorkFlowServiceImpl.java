@@ -1,6 +1,7 @@
 package com.yejf.ativiti.service;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -34,5 +35,15 @@ public class WorkFlowServiceImpl implements WorkFlowService {
 	@Override
 	public void deployProcess(File file, String deployName) {
 		workFlowDao.deployProcess(file,deployName);
+	}
+	
+	@Override
+	public InputStream getDiagramInputStream(String proceDefId) {
+		return workFlowDao.getDiagramInputStream(proceDefId);
+	}
+	
+	@Override
+	public void removeDeploymentById(String deployId) {
+		workFlowDao.removeDeploymentById(deployId);
 	}
 }

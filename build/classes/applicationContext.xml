@@ -64,6 +64,7 @@
 			<tx:method name="delete*" isolation="DEFAULT" propagation="REQUIRED" read-only="false" />
 			<tx:method name="create*" isolation="DEFAULT" propagation="REQUIRED" read-only="false" />
 			<tx:method name="deploy*" isolation="DEFAULT" propagation="REQUIRED" read-only="false" />
+			<tx:method name="remove*" isolation="DEFAULT" propagation="REQUIRED" read-only="false" />
 			<tx:method name="*" read-only="true" />
 		</tx:attributes>
 	</tx:advice>

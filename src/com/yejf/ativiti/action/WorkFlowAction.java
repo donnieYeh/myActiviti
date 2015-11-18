@@ -2,6 +2,9 @@ package com.yejf.ativiti.action;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -49,6 +52,10 @@ public class WorkFlowAction extends BaseAction implements ModelDriven<WorkFlowBe
 		return "deployManage";
 	}
 	
+	public String taskManage(){
+		return "taskManage";
+	}
+	
 	public String deployProcess(){
 		String deployName = workFlowBean.getFileName();
 		File file = workFlowBean.getProcessFile();
@@ -61,6 +68,32 @@ public class WorkFlowAction extends BaseAction implements ModelDriven<WorkFlowBe
 	}
 
 	public String showDiagram(){
-		return "showDiagram";
+		String proceDefId = "";
+		proceDefId = achieveRequest().getParameter("procDefId");
+		try {
+			InputStream in = workFlowService.getDiagramInputStream(proceDefId);
+			OutputStream out = achieveResponse().getOutputStream();
+			for (int i = -1; (i = in.read()) != -1;) {
+				out.write(i);
+			}
+			out.close();
+			in.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
+	
+	public String deleteDeployment(){
+		String deployId = "";
+		deployId = achieveRequest().getParameter("deployId");
+		if (!StringUtils.isEmpty(deployId)) {
+			workFlowService.removeDeploymentById(deployId);
+		}
+		return deployManage();
+	}
+	
+	
 }
