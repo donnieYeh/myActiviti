@@ -8,8 +8,11 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 
+import com.gdth.base.entity.BaseEntity;
 import com.yejf.ativiti.service.WorkFlowService;
 import com.yejf.base.BaseAction;
+import com.yejf.business.entity.LeaveBill;
+import com.yejf.business.service.LeaveBillService;
 
 @ParentPackage("json")
 @Namespace("/activiti")
@@ -23,5 +26,20 @@ public class WorkFlowOperateAction extends BaseAction {
 		this.workFlowService = workFlowService;
 	}
 	
+	@Resource
+	LeaveBillService leaveBillService;
 	
+	public void setLeaveBillService(LeaveBillService leaveBillService) {
+		this.leaveBillService = leaveBillService;
+	}
+
+	public String startProcess(){
+		String key = "";
+		String billId = achieveRequest().getParameter("billId");
+		LeaveBill leaveBill = leaveBillService.findById(Long.parseLong(billId));
+		leaveBill.setState(1);
+		key = leaveBill.getClass().getSimpleName();
+//		workFlowService.startProcessByKey(key);
+		return SUCCESS;
+	}
 }

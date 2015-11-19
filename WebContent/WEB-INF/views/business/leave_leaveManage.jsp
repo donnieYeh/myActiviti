@@ -26,7 +26,16 @@
 				iconCls: 'icon-edit',
 				text:"启动请假流程",
 				handler: function(){
-					window.location.href= "<%=contextPath %>/activiti/workFlow!startProcess.do?procDefId="+procDefId
+					var row = $('.easyui-datagrid').datagrid('getSelected');
+					if (row == null){
+						showMsg("show", "没有流程可启动", "请选择一行")
+					}else{
+						var url="<%=contextPath %>/activiti/workFlowOpt!startProcess.do";
+						var data = {"billId" : row.id};
+						$.post(url,data,function(n){
+							location.reload(true);
+						})
+					}
 				}
 			},{
 				iconCls: 'icon-edit',
