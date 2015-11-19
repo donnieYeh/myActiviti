@@ -36,10 +36,8 @@ public class WorkFlowOperateAction extends BaseAction {
 	public String startProcess(){
 		String key = "";
 		String billId = achieveRequest().getParameter("billId");
-		LeaveBill leaveBill = leaveBillService.findById(Long.parseLong(billId));
-		leaveBill.setState(1);
-		key = leaveBill.getClass().getSimpleName();
-//		workFlowService.startProcessByKey(key);
+		workFlowService.startProcessWithBillId(billId);
+		
 		return SUCCESS;
 	}
 }

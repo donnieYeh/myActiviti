@@ -18,4 +18,6 @@ public interface WorkFlowService {
 	InputStream getDiagramInputStream(String proceDefId);
 
 	void removeDeploymentById(String deployId);
+
+	void startProcessWithBillId(String billId);
 }

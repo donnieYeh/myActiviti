@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipInputStream;
 
 import javax.annotation.Resource;
@@ -60,5 +61,10 @@ public class WorkFlowDaoImpl implements WorkFlowDao {
 	@Override
 	public void removeDeploymentById(String deployId) {
 		processEngine.getRepositoryService().deleteDeploymentCascade(deployId);
+	}
+	
+	@Override
+	public void startProcessByKey(String key,String businessKey,Map<String,Object> variables) {
+		processEngine.getRuntimeService().startProcessInstanceByKey(key, businessKey, variables)
 	}
 }
