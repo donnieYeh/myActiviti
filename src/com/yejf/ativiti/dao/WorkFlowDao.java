@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 
 public interface WorkFlowDao {
 
@@ -20,6 +22,12 @@ public interface WorkFlowDao {
 
 	void removeDeploymentById(String deployId);
 
-	void startProcessByKey(String key,String businessKey,Map<String,Object> variables);
+	ProcessInstance startProcessByKey(String key,String businessKey,Map<String,Object> variables);
+
+	void completeTask(String id);
+
+	Task findActivityTaskByProcInsId(String id);
+
+	List<Task> findTaskListByAssigneeId(String userId);
 
 }

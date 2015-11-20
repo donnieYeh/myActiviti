@@ -10,6 +10,8 @@ import javax.annotation.Resource;
 
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.springframework.stereotype.Service;
 
 import com.gdth.base.dao.BaseDao;
@@ -61,13 +63,27 @@ public class WorkFlowServiceImpl implements WorkFlowService {
 	}
 	
 	@Override
-	public void startProcessWithBillId(String billId) {
+	public ProcessInstance startProcessWithBillId(String billId) {
+		//业务处理，设置流程业务状态为1
 		LeaveBill leaveBill = leaveBillDao.findById(Long.parseLong(billId));
 		leaveBill.setState(1);
+		//启动流程，分别取得3个参数设入流程
 		String key = leaveBill.getClass().getSimpleName();
 		String businessKey = key+"."+billId;
 		Map<String, Object> variables = new HashMap<String, Object>();
-		variables.put("performUser", SessionContext.get().getId());
-		workFlowDao.startProcessByKey(key, businessKey, variables);;
+		variables.put("performer", SessionContext.get().getId());
+		return workFlowDao.startProcessByKey(key, businessKey, variables);
+	}
+	
+	@Override
+	public List<Task> findTaskListByUserId(String userId) {
+		return workFlowDao.findTaskListByAssigneeId(userId);
+	}
+	
+	@Override
+	public void completeTask(String procInsid) {
+		//完成表单填写任务，根据上一步，取得流程实例id来完成任务
+		Task task = workFlowDao.findActivityTaskByProcInsId(procInsid);
+		workFlowDao.completeTask(task.getId());
 	}
 }

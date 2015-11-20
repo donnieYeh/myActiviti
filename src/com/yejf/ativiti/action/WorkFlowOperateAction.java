@@ -1,17 +1,14 @@
 package com.yejf.ativiti.action;
 
-import java.io.File;
-
 import javax.annotation.Resource;
 
+import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 
-import com.gdth.base.entity.BaseEntity;
 import com.yejf.ativiti.service.WorkFlowService;
 import com.yejf.base.BaseAction;
-import com.yejf.business.entity.LeaveBill;
 import com.yejf.business.service.LeaveBillService;
 
 @ParentPackage("json")
@@ -34,10 +31,13 @@ public class WorkFlowOperateAction extends BaseAction {
 	}
 
 	public String startProcess(){
-		String key = "";
 		String billId = achieveRequest().getParameter("billId");
-		workFlowService.startProcessWithBillId(billId);
-		
+		ProcessInstance pi = workFlowService.startProcessWithBillId(billId);
+		workFlowService.completeTask(pi.getId());
 		return SUCCESS;
+	}
+	
+	public void completeTask(){
+		workFlowService.completeTask("37501");
 	}
 }

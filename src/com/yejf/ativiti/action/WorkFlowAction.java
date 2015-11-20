@@ -14,6 +14,7 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -53,6 +54,9 @@ public class WorkFlowAction extends BaseAction implements ModelDriven<WorkFlowBe
 	}
 	
 	public String taskManage(){
+		Long userId = SessionContext.get().getId();
+		List<Task> tasks = workFlowService.findTaskListByUserId(""+userId);
+		ValueContext.putValueContext("tasks", tasks);
 		return "taskManage";
 	}
 	

@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 
 public interface WorkFlowService {
 
@@ -19,5 +21,9 @@ public interface WorkFlowService {
 
 	void removeDeploymentById(String deployId);
 
-	void startProcessWithBillId(String billId);
+	ProcessInstance startProcessWithBillId(String billId);
+
+	List<Task> findTaskListByUserId(String userId);
+
+	void completeTask(String id);
 }

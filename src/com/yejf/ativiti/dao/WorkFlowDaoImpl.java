@@ -13,6 +13,8 @@ import javax.annotation.Resource;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.springframework.stereotype.Repository;
 
 @Repository("workFlowDao")
@@ -64,7 +66,22 @@ public class WorkFlowDaoImpl implements WorkFlowDao {
 	}
 	
 	@Override
-	public void startProcessByKey(String key,String businessKey,Map<String,Object> variables) {
-		processEngine.getRuntimeService().startProcessInstanceByKey(key, businessKey, variables)
+	public ProcessInstance startProcessByKey(String key,String businessKey,Map<String,Object> variables) {
+		return processEngine.getRuntimeService().startProcessInstanceByKey(key, businessKey, variables);
+	}
+	
+	@Override
+	public Task findActivityTaskByProcInsId(String procInsId) {
+		return processEngine.getTaskService().createTaskQuery().processInstanceId(procInsId).active().singleResult();
+	}
+	
+	@Override
+	public void completeTask(String taskId) {
+		processEngine.getTaskService().complete(taskId);
+	}
+	
+	@Override
+	public List<Task> findTaskListByAssigneeId(String userId) {
+		return processEngine.getTaskService().createTaskQuery().taskAssignee(userId).list();
 	}
 }
