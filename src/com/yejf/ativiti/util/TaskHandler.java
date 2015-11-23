@@ -7,6 +7,7 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.yejf.business.dao.EmployeeDao;
 import com.yejf.business.entity.Employee;
 import com.yejf.business.service.EmployeeService;
 import com.yejf.utils.SessionContext;
@@ -17,8 +18,8 @@ public class TaskHandler implements TaskListener {
 		Long userId = SessionContext.get().getId();
 		ApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext
 				.getServletContext());
-		EmployeeService employeeService = (EmployeeService) ac.getBean("employeeService");
-		Employee user = employeeService.findById(userId);
+		EmployeeDao employeeDao = (EmployeeDao) ac.getBean("employeeDao");
+		Employee user = employeeDao.findById(userId);
 		delegateTask.setAssignee(""+user.getManager().getId());
 	}
 }

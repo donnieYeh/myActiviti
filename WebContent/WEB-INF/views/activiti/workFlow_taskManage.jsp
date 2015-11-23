@@ -6,6 +6,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+function showCurrentTaskDiagram(id,name){
+	var url = "activiti/workFlow!toDiagramView.do?taskId="+id;
+	parent.addTab(name,url);
+}
+</script>
 </head>
 <body>
 	<div class="easyui-panel" data-options="fit:true">
@@ -35,7 +41,10 @@
 							<td><s:property value="processInstanceId" /></td>
 							<td><s:property value="executionId" /></td>
 							<td><s:property value="processDefinitionId" /></td>
-							<td><a href="workFlowOpt!completeTask.do">删除</a></td>
+							<td>
+								<a href="workFlow!transactTask.do?taskId=<s:property value='id' />">任务办理</a>
+								<a href="javascript:showCurrentTaskDiagram(<s:property value='id' />,'当前任务节点')">显示流程图</a>
+							</td>
 						</tr>
 					</s:iterator>
 				</tbody>

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -99,5 +100,22 @@ public class WorkFlowAction extends BaseAction implements ModelDriven<WorkFlowBe
 		return deployManage();
 	}
 	
+	public String toDiagramView(){
+		String taskId = achieveRequest().getParameter("taskId");
+		ProcessDefinition processDefinition = workFlowService.getProcDefByTask(taskId);
+		String procDefId = processDefinition.getId();
+		Map<String, Object> coordinate = workFlowService.findTaskCoodinate(taskId);
+		ValueContext.putValueContext("procDefId", procDefId);
+		ValueContext.putValueContext("taskCoordinate", coordinate);
+		return "diagramView";
+	}
+	
+	public String transactTask(){
+		String taskId = achieveRequest().getParameter("taskId");
+		ProcessInstance processInstance = workFlowService.getProcInsByTask(taskId);
+		String businessKey = processInstance.getBusinessKey();
+		String billId = businessKey.substring(businessKey.indexOf(".")+1);
+		return "transactTask";
+	}
 	
 }

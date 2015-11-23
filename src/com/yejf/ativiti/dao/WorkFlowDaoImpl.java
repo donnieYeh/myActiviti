@@ -11,6 +11,8 @@ import java.util.zip.ZipInputStream;
 import javax.annotation.Resource;
 
 import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -76,7 +78,7 @@ public class WorkFlowDaoImpl implements WorkFlowDao {
 	}
 	
 	@Override
-	public void completeTask(String taskId) {
+	public void completeTaskById(String taskId) {
 		processEngine.getTaskService().complete(taskId);
 	}
 	

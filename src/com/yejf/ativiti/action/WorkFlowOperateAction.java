@@ -33,11 +33,14 @@ public class WorkFlowOperateAction extends BaseAction {
 	public String startProcess(){
 		String billId = achieveRequest().getParameter("billId");
 		ProcessInstance pi = workFlowService.startProcessWithBillId(billId);
-		workFlowService.completeTask(pi.getId());
+		workFlowService.completeTaskByProcInsId(pi.getId());
 		return SUCCESS;
 	}
 	
-	public void completeTask(){
-		workFlowService.completeTask("37501");
+	public String completeTask(){
+		String taskId = achieveRequest().getParameter("taskId");
+		workFlowService.completeTaskById(taskId);
+		return SUCCESS;
 	}
+	
 }

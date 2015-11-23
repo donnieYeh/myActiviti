@@ -3,6 +3,7 @@ package com.yejf.ativiti.service;
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -25,5 +26,13 @@ public interface WorkFlowService {
 
 	List<Task> findTaskListByUserId(String userId);
 
-	void completeTask(String id);
+	void completeTaskByProcInsId(String id);
+
+	void completeTaskById(String taskId);
+
+	ProcessDefinition getProcDefByTask(String taskId);
+
+	Map<String, Object> findTaskCoodinate(String taskId);
+
+	ProcessInstance getProcInsByTask(String taskId);
 }
