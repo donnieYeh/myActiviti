@@ -1,11 +1,18 @@
 package com.yejf.ativiti.action;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
+import org.activiti.engine.impl.pvm.PvmTransition;
+import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
+import org.springframework.util.StringUtils;
 
 import com.yejf.ativiti.service.WorkFlowService;
 import com.yejf.base.BaseAction;
@@ -39,7 +46,13 @@ public class WorkFlowOperateAction extends BaseAction {
 	
 	public String completeTask(){
 		String taskId = achieveRequest().getParameter("taskId");
-		workFlowService.completeTaskById(taskId);
+		String comment = achieveRequest().getParameter("comment");
+		String option = achieveRequest().getParameter("option");
+		Map<String, Object> variable = new HashMap<String, Object>();
+		if (!StringUtils.isEmpty(option) && !option.equals("默认提交")) {
+			variable.put("approve", option);
+		}
+		workFlowService.completeTask(taskId,comment,variable);
 		return SUCCESS;
 	}
 	

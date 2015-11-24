@@ -7,9 +7,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">
-function showCurrentTaskDiagram(id,name){
+function showCurrentTaskDiagram(id){
 	var url = "activiti/workFlow!toDiagramView.do?taskId="+id;
-	parent.addTab(name,url);
+	parent.addTab('当前任务节点',url);
+}
+
+function transactTask(taskId){
+	var url = "activiti/workFlow!transactTask.do?taskId="+taskId;
+	parent.addTab('任务办理',url);
 }
 </script>
 </head>
@@ -42,8 +47,8 @@ function showCurrentTaskDiagram(id,name){
 							<td><s:property value="executionId" /></td>
 							<td><s:property value="processDefinitionId" /></td>
 							<td>
-								<a href="workFlow!transactTask.do?taskId=<s:property value='id' />">任务办理</a>
-								<a href="javascript:showCurrentTaskDiagram(<s:property value='id' />,'当前任务节点')">显示流程图</a>
+								<a href="javascript:transactTask(<s:property value='id' />)">任务办理</a>
+								<a href="javascript:showCurrentTaskDiagram(<s:property value='id' />)">显示流程图</a>
 							</td>
 						</tr>
 					</s:iterator>
