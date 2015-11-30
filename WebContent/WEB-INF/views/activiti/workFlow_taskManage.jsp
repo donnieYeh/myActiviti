@@ -21,7 +21,7 @@ function transactTask(taskId){
 <body>
 	<div class="easyui-panel" data-options="fit:true">
 		<div>
-			<table class="easyui-datagrid" data-options="title:'部署列表',rownumbers:true,singleSelect:true">
+			<table class="easyui-datagrid" data-options="title:'任务列表',rownumbers:true,singleSelect:true,sortOrder:'desc'">
 				<thead>
 					<tr>
 						<th data-options="field:'id'">id</th>

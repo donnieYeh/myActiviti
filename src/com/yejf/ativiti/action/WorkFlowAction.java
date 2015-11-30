@@ -16,6 +16,7 @@ import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -128,12 +129,12 @@ public class WorkFlowAction extends BaseAction implements ModelDriven<WorkFlowBe
 		LeaveBill bill = leaveBillService.findById(Long.parseLong(billId));
 		ValueContext.putValueContext("leaveBill", bill);
 		
-		ActivityImpl activityImpl = workFlowService.getActivityImplByTask(taskId);
-		List<String> branchList = workFlowService.getFlowList(activityImpl);
+		List<String> branchList = workFlowService.getNextFlowList(taskId);
 		ValueContext.putValueContext("branchList", branchList);
 		ValueContext.putValueContext("taskId", taskId);
 		
-		List<E> list = workFlowService.findCommentByProcIns(processInstance);
+		List<Comment> commentList = workFlowService.findCommentByProcIns(processInstance);
+		ValueContext.putValueContext("commentList", commentList);
 		return "transactTask";
 	}
 	

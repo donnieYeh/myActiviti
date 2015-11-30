@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.history.HistoricDetail;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
@@ -19,6 +20,7 @@ import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -127,8 +129,13 @@ public class WorkFlowServiceImpl implements WorkFlowService {
 	@Override
 	public ProcessInstance getProcInsByTask(String taskId) {
 		Task task = processEngine.getTaskService().createTaskQuery().taskId(taskId).singleResult();
-		return processEngine.getRuntimeService().createProcessInstanceQuery()
-				.processInstanceId(task.getProcessInstanceId()).singleResult();
+		if (task == null) {
+			return null;
+		}
+		String procInsId = task.getProcessInstanceId();
+		ProcessInstance processInstance = processEngine.getRuntimeService().createProcessInstanceQuery()
+				.processInstanceId(procInsId).singleResult();
+		return processInstance;
 	}
 
 	@Override
@@ -146,14 +153,20 @@ public class WorkFlowServiceImpl implements WorkFlowService {
 	}
 
 	@Override
-	public List<String> getFlowList(ActivityImpl activityImpl) {
+	public List<String> getNextFlowList(String taskId) {
 		List<String> list = new ArrayList<String>();
+		Task task = processEngine.getTaskService().createTaskQuery().taskId(taskId).singleResult();
+		HistoricProcessInstance historicProcessInstance = processEngine.getHistoryService().createHistoricProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
+		String sponsor = historicProcessInstance.getStartUserId();
+		ActivityImpl activityImpl = getActivityImplByTask(taskId);
 		List<PvmTransition> branchList = activityImpl.getOutgoingTransitions();
 		for (PvmTransition pvm : branchList) {
 			String name = (String) pvm.getProperty("name");
 			if (!StringUtils.isEmpty(name)) {
 				list.add(name);
-			} else {
+			}else if(!StringUtils.isEmpty(sponsor) && sponsor.equals(SessionContext.get().getId()+"")){
+				list.add("提交申请");
+			}else {
 				list.add("默认批准");
 			}
 		}
@@ -175,12 +188,22 @@ public class WorkFlowServiceImpl implements WorkFlowService {
 	}
 
 	@Override
-	public List<E> findCommentByProcIns(ProcessInstance processInstance) {
-		List<HistoricDetail> list = processEngine.getHistoryService().createHistoricDetailQuery()
+	public List<Comment> findCommentByProcIns(ProcessInstance processInstance) {
+		List<Comment> list = new ArrayList<Comment>();
+		/*List<HistoricTaskInstance> htiList = processEngine.getHistoryService().createHistoricTaskInstanceQuery()
 				.processInstanceId(processInstance.getId()).list();
-		for (HistoricDetail hd : list) {
-			hd.get
-		}
-		return null;
+		for (HistoricTaskInstance ht : htiList) {
+			String taskId = ht.getId();
+			List<Comment> comments = processEngine.getTaskService().getTaskComments(taskId);
+			list.addAll(comments);
+		}*/
+		list = processEngine.getTaskService().getProcessInstanceComments(processInstance.getId());
+		return list;
 	}
+	
+	@Override
+	public void setAuthenticatedUserId(String userId) {
+		processEngine.getIdentityService().setAuthenticatedUserId(userId);
+	}
+
 }

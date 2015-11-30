@@ -35,7 +35,7 @@ public class LeaveBillTest {
 	}
 
 	@Test
-	public void test() {
+	public void copyInputStreamToFile() {
 		ProcessEngine processEngine;
 		ProcessEngineConfiguration peConfiguration;
 		peConfiguration = ProcessEngineConfiguration
@@ -51,6 +51,12 @@ public class LeaveBillTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void test(){
+		File file = new File("d:\\hhh.txt");
+		System.out.println(file.getPath());
 	}
 
 }

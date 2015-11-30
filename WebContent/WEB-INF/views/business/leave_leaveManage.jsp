@@ -11,20 +11,37 @@
 	$(function(){
 		initToolBar();
 	});
-	function leaveApply(){
-		var url = "business/leave!toApplyForm.do";
-		parent.addTab("申请请假",url);
+	function leaveApply(name,billId){
+		var param = "";
+		if(billId){
+			param = "?billId="+billId;
+		}
+		var url = "business/leave!toApplyForm.do"+param;
+		parent.addTab(name,url);
 	}
 	
 	function initToolBar(){
 		$('.easyui-datagrid').datagrid({
+			onClickRow:function(index,row){
+				if(row.state.trim() == '审核中' || row.state.trim() == '审核通过'){
+					$('#startBtn').linkbutton('disable');
+ 					$('#modifyBtn').linkbutton('disable');
+					$('#deleteBtn').linkbutton('disable');
+				} else{
+					$('#startBtn').linkbutton('enable');
+ 					$('#modifyBtn').linkbutton('enable');
+					$('#deleteBtn').linkbutton('enable');
+				}
+			},
 			toolbar: [{
 				iconCls: 'icon-edit',
 				text:"请假申请",
-				handler: function(){leaveApply();}
+				handler: function(){leaveApply("申请请假");}
 			},{
+				id:'startBtn',
 				iconCls: 'icon-edit',
 				text:"启动请假流程",
+				disabled:true,
 				handler: function(){
 					var row = $('.easyui-datagrid').datagrid('getSelected');
 					if (row == null){
@@ -38,13 +55,28 @@
 					}
 				}
 			},{
+				id:'modifyBtn',
 				iconCls: 'icon-edit',
 				text:"修改",
-				handler: function(){window.location.href= ""}
+				disabled:true,
+				handler: function(){
+					var row = $('.easyui-datagrid').datagrid('getSelected');
+					leaveApply("修改申请",row.id);
+				}
 			},{
+				id:'deleteBtn',
 				iconCls: 'icon-edit',
 				text:"删除",
-				handler: function(){leaveApply();}
+				disabled:true,
+				handler: function(){
+					var row = $('.easyui-datagrid').datagrid('getSelected');
+					var url="leaveOpt!removeBill.do";
+					var data={"id":row.id}
+					function callback(){
+						window.location.reload(true);
+					}
+					$.post(url,data,callback());
+				}
 			}]
 		});
 	}

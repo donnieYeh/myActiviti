@@ -73,33 +73,26 @@ function submitForm(btn){
 				<thead>
 					<tr>
 						<th data-options="field:'id'">id</th>
-						<th data-options="field:'name'">任务名</th>
-						<th data-options="field:'assignee'">任务办理人</th>
-						<th data-options="field:'createTime'">任务开始时间</th>
-						<th data-options="field:'dueDate'">受理日期</th>
+						<th data-options="field:'userId'">批注人</th>
+						<th data-options="field:'time'">批注时间</th>
+						<th data-options="field:'fullMessage'">批注信息</th>
+						<th data-options="field:'taskId'">任务id</th>
 						<th data-options="field:'processInstanceId'">流程实例id</th>
-						<th data-options="field:'executionId'">执行流id</th>
-						<th data-options="field:'processDefinitionId'">流程定义id</th>
-						<th data-options="field:'opt'">操作</th>
 					</tr>
 				</thead>
 				<tbody>
-					<s:iterator value="#tasks">
+				<s:if test="#commentList != null && #commentList.size()>0">
+					<s:iterator value="#commentList">
 						<tr>
 							<td><s:property value="id" /></td>
-							<td><s:property value="name" /></td>
-							<td><s:property value="assignee" /></td>
-							<td><s:date name="createTime" format="YYYY-MM-dd HH:mm:ss" /></td>
-							<td><s:date name="dueDate" format="YYYY-MM-dd HH:mm:ss" /></td>
+							<td><s:property value="userId" /></td>
+							<td><s:date name="time" format="YYYY-MM-dd HH:mm:ss" /></td>
+							<td><s:property value="fullMessage" /></td>
+							<td><s:property value="taskId" /></td>
 							<td><s:property value="processInstanceId" /></td>
-							<td><s:property value="executionId" /></td>
-							<td><s:property value="processDefinitionId" /></td>
-							<td>
-								<a href="javascript:transactTask(<s:property value='id' />)">任务办理</a>
-								<a href="javascript:showCurrentTaskDiagram(<s:property value='id' />)">显示流程图</a>
-							</td>
 						</tr>
 					</s:iterator>
+				</s:if>
 				</tbody>
 			</table>
 		</div>

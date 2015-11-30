@@ -84,6 +84,6 @@ public class WorkFlowDaoImpl implements WorkFlowDao {
 	
 	@Override
 	public List<Task> findTaskListByAssigneeId(String userId) {
-		return processEngine.getTaskService().createTaskQuery().taskAssignee(userId).list();
+		return processEngine.getTaskService().createTaskQuery().taskAssignee(userId).orderByTaskId().desc().list();
 	}
 }
