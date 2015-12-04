@@ -38,6 +38,5 @@ public class WorkFlowOperateAction extends BaseAction {
 	}
 	
 	public void completeTask(){
-		workFlowService.completeTask("37501");
 	}
 }
