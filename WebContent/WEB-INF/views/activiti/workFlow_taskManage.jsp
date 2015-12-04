@@ -6,11 +6,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+function showCurrentTaskDiagram(id){
+	var url = "activiti/workFlow!toDiagramView.do?taskId="+id;
+	parent.addTab('当前任务节点',url);
+}
+
+function transactTask(taskId){
+	var url = "activiti/workFlow!transactTask.do?taskId="+taskId;
+	parent.addTab('任务办理',url);
+}
+</script>
 </head>
 <body>
 	<div class="easyui-panel" data-options="fit:true">
 		<div>
-			<table class="easyui-datagrid" data-options="title:'部署列表',rownumbers:true,singleSelect:true">
+			<table class="easyui-datagrid" data-options="title:'任务列表',rownumbers:true,singleSelect:true,sortOrder:'desc'">
 				<thead>
 					<tr>
 						<th data-options="field:'id'">id</th>
@@ -35,7 +46,10 @@
 							<td><s:property value="processInstanceId" /></td>
 							<td><s:property value="executionId" /></td>
 							<td><s:property value="processDefinitionId" /></td>
-							<td><a href="workFlowOpt!completeTask.do">删除</a></td>
+							<td>
+								<a href="javascript:transactTask(<s:property value='id' />)">任务办理</a>
+								<a href="javascript:showCurrentTaskDiagram(<s:property value='id' />)">显示流程图</a>
+							</td>
 						</tr>
 					</s:iterator>
 				</tbody>

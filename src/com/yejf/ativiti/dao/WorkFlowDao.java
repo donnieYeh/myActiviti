@@ -24,10 +24,10 @@ public interface WorkFlowDao {
 
 	ProcessInstance startProcessByKey(String key,String businessKey,Map<String,Object> variables);
 
-	void completeTask(String id);
-
 	Task findActivityTaskByProcInsId(String id);
 
 	List<Task> findTaskListByAssigneeId(String userId);
+
+	void completeTaskById(String taskId);
 
 }

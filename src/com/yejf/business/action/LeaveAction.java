@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
+import org.springframework.util.StringUtils;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.yejf.base.BaseAction;
@@ -37,6 +38,11 @@ public class LeaveAction extends BaseAction{
 	}
 	
 	public String toApplyForm(){
+		String billId = achieveRequest().getParameter("billId");
+		if (!StringUtils.isEmpty(billId)) {
+			LeaveBill bill = leaveBillService.findById(Long.parseLong(billId));
+			ValueContext.putValueContext("bill", bill);
+		}
 		return "leaveApplyForm";
 	}
 	

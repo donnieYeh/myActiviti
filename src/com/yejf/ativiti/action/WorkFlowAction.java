@@ -1,19 +1,19 @@
 package com.yejf.ativiti.action;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -24,6 +24,8 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.yejf.ativiti.entity.WorkFlowBean;
 import com.yejf.ativiti.service.WorkFlowService;
 import com.yejf.base.BaseAction;
+import com.yejf.business.entity.LeaveBill;
+import com.yejf.business.service.LeaveBillService;
 import com.yejf.utils.SessionContext;
 import com.yejf.utils.ValueContext;
 
@@ -38,6 +40,13 @@ public class WorkFlowAction extends BaseAction implements ModelDriven<WorkFlowBe
 		this.workFlowService = workFlowService;
 	}
 	
+	@Resource
+	LeaveBillService leaveBillService;
+	
+	public void setLeaveBillService(LeaveBillService leaveBillService) {
+		this.leaveBillService = leaveBillService;
+	}
+
 	WorkFlowBean workFlowBean = new WorkFlowBean();
 	
 	@Override
@@ -99,5 +108,31 @@ public class WorkFlowAction extends BaseAction implements ModelDriven<WorkFlowBe
 		return deployManage();
 	}
 	
+	public String toDiagramView(){
+		String taskId = achieveRequest().getParameter("taskId");
+		ActivityImpl activityImpl = workFlowService.getActivityImplByTask(taskId);
+		Map<String, Object> coordinate = workFlowService.findTaskCoodinate(activityImpl);
+		ProcessDefinition processDefinition = workFlowService.getProcDefByTask(taskId);
+		ValueContext.putValueContext("procDefId", processDefinition.getId());
+		ValueContext.putValueContext("taskCoordinate", coordinate);
+		return "diagramView";
+	}
+	
+	public String transactTask(){
+		String taskId = achieveRequest().getParameter("taskId");
+		ProcessInstance processInstance = workFlowService.getProcInsByTask(taskId);
+		String businessKey = processInstance.getBusinessKey();
+		String billId = businessKey.substring(businessKey.indexOf(".")+1);
+		LeaveBill bill = leaveBillService.findById(Long.parseLong(billId));
+		ValueContext.putValueContext("leaveBill", bill);
+		
+		List<String> branchList = workFlowService.getNextFlowList(taskId);
+		ValueContext.putValueContext("branchList", branchList);
+		ValueContext.putValueContext("taskId", taskId);
+		
+		List<Comment> commentList = workFlowService.findCommentByProcIns(processInstance);
+		ValueContext.putValueContext("commentList", commentList);
+		return "transactTask";
+	}
 	
 }

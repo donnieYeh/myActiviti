@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
+import org.springframework.util.StringUtils;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.yejf.base.BaseAction;
@@ -36,7 +37,12 @@ public class LeaveOperateAction extends BaseAction implements ModelDriven<LeaveB
 	public String applyForm_save(){
 		leaveBill.setState(0);
 		leaveBill.setUser(SessionContext.get());
-		leaveBillService.create(leaveBill);
+		leaveBillService.createOrModify(leaveBill);
+		return SUCCESS;
+	}
+	
+	public String removeBill() {
+		leaveBillService.remove(leaveBill.getId());
 		return SUCCESS;
 	}
 }
